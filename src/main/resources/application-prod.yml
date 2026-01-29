@@ -1,0 +1,60 @@
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3306/security_app_prod?useSSL=true&requireSSL=true&serverTimezone=UTC}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 10
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      leak-detection-threshold: 60000
+  
+  jpa:
+    hibernate:
+      ddl-auto: validate  # En producción NUNCA usar 'create' o 'update'
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+        dialect: org.hibernate.dialect.MySQLDialect
+        type:
+          preferred_uuid_jdbc_type: CHAR
+        jdbc:
+          batch_size: 20
+        order_inserts: true
+        order_updates: true
+
+# Configuración de SpringDoc OpenAPI para producción (deshabilitar en producción por seguridad)
+springdoc:
+  api-docs:
+    enabled: false  # Deshabilitar documentación en producción
+  swagger-ui:
+    enabled: false  # Deshabilitar UI en producción
+
+# Configuración de logging para producción
+logging:
+  level:
+    com.bkseducate.securityapp: INFO
+    org.springframework.security: WARN
+    org.hibernate.SQL: WARN
+    org.hibernate.type.descriptor.sql.BasicBinder: WARN
+  file:
+    name: ${LOG_FILE_PATH:/var/log/security-app/application.log}
+  pattern:
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+# Configuración de JWT para producción (debe venir de variables de entorno)
+jwt:
+  secret: ${JWT_SECRET}  # OBLIGATORIO en producción
+  access-token-expiration: ${JWT_ACCESS_TOKEN_EXPIRATION:900000}
+  refresh-token-expiration: ${JWT_REFRESH_TOKEN_EXPIRATION:604800000}
+
+server:
+  port: ${SERVER_PORT:8080}
+  error:
+    include-stacktrace: never
+    include-message: on_param
+    include-binding-errors: on_param

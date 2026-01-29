@@ -1,0 +1,42 @@
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# IDE
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+.classpath
+.project
+.settings/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Application (archivos locales con credenciales)
+application-local.yml
+# NO incluir application-prod.yml en .gitignore si quieres versionarlo sin credenciales
+# application-prod.yml
+
+# H2 Database
+*.db
+*.mv.db
+*.trace.db

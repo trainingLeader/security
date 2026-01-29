@@ -1,0 +1,55 @@
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3306/security_app_dev?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:1234}
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+  
+  jpa:
+    hibernate:
+      ddl-auto: update  # En desarrollo permite crear/actualizar esquema
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQLDialect
+        type:
+          preferred_uuid_jdbc_type: CHAR
+    defer-datasource-initialization: true  # Permite ejecutar data.sql después de crear esquema
+  
+  sql:
+    init:
+      mode: always  # Siempre ejecutar data.sql
+      data-locations: classpath:data.sql
+
+# Configuración de logging para desarrollo
+logging:
+  level:
+    com.bkseducate.securityapp: DEBUG
+    org.springframework.security: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+# Configuración de SpringDoc OpenAPI para desarrollo
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    try-it-out-enabled: true
+    operations-sorter: method
+    tags-sorter: alpha
+
+# H2 Console (opcional, descomentar si quieres usar H2 en desarrollo)
+#  h2:
+#    console:
+#      enabled: true
+#      path: /h2-console
